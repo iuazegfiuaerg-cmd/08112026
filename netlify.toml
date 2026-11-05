@@ -1,0 +1,24 @@
+[build]
+  publish = "public"
+  command = "node --check netlify/functions/tcg.mjs"
+[build.environment]
+  NODE_VERSION = "22.23.2"
+[functions]
+  directory = "netlify/functions"
+  node_bundler = "esbuild"
+[[redirects]]
+  from = "/api/*"
+  to = "/.netlify/functions/tcg/:splat"
+  status = 200
+  force = true
+[[redirects]]
+  from = "/photos/*"
+  to = "/.netlify/functions/tcg/photo/:splat"
+  status = 200
+  force = true
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Content-Type-Options = "nosniff"
+    Referrer-Policy = "same-origin"
+    Content-Security-Policy = "default-src 'self'; img-src 'self' data:; style-src 'self' 'unsafe-inline'; script-src 'self'; connect-src 'self'; frame-ancestors 'none'"
